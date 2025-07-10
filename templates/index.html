@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="display-4 fw-bold mb-4">Latest News</h1>
+            
+            {% if articles %}
+                {% for article in articles %}
+                <article class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <span class="badge bg-primary mb-2">{{ article.category.name }}</span>
+                                {% if article.department %}
+                                <span class="badge bg-secondary mb-2">{{ article.department.name }}</span>
+                                {% endif %}
+                            </div>
+                            <small class="text-muted">{{ article.created_at | datetime }}</small>
+                        </div>
+                        
+                        <h2 class="card-title h4">
+                            <a href="{{ url_for('article', article_id=article.id) }}" class="text-decoration-none text-dark">
+                                {{ article.title }}
+                            </a>
+                        </h2>
+                        
+                        {% if article.summary %}
+                        <p class="card-text">{{ article.summary }}</p>
+                        {% else %}
+                        <p class="card-text">{{ article.content | truncate(200) | safe }}</p>
+                        {% endif %}
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                By <strong>{{ article.author.name }}</strong>
+                                {% if article.author.role_title %}
+                                - {{ article.author.role_title }}
+                                {% endif %}
+                            </small>
+                            <a href="{{ url_for('article', article_id=article.id) }}" class="btn btn-outline-primary btn-sm">
+                                Read More <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                    <h3 class="text-muted">No articles published yet</h3>
+                    <p class="text-muted">Check back later for the latest news and updates.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-list me-2"></i>Categories
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for category in categories %}
+                    <a href="{{ url_for('category', category_id=category.id) }}" 
+                       class="d-block py-2 text-decoration-none border-bottom">
+                        {{ category.name }}
+                        <span class="badge bg-light text-dark ms-2">
+                            {{ category.articles | selectattr('published') | list | length }}
+                        </span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
