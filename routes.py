@@ -129,6 +129,9 @@ def create_article():
     """Create new article"""
     form = ArticleForm()
     if form.validate_on_submit():
+        # Log the form data for debugging
+        app.logger.info(f"Creating article with published={form.published.data}")
+        
         article = Article(
             title=form.title.data,
             content=form.content.data,
@@ -147,6 +150,9 @@ def create_article():
         
         db.session.add(article)
         db.session.commit()
+        
+        # Log the final state for debugging
+        app.logger.info(f"Article created with ID={article.id}, published={article.published}")
         
         flash('Article created successfully', 'success')
         return redirect(url_for('dashboard'))
