@@ -52,7 +52,7 @@ with app.app_context():
     db.create_all()
     
     # Create admin user from environment variables
-    from models import User
+    from models import User, Category, Department
     from werkzeug.security import generate_password_hash
     
     admin_email = os.environ.get("ADMIN_EMAIL")
@@ -72,3 +72,31 @@ with app.app_context():
             db.session.add(admin_user)
             db.session.commit()
             app.logger.info(f"Admin user created: {admin_email}")
+    
+    # Add sample categories if none exist
+    if Category.query.count() == 0:
+        categories = [
+            Category(name="Politics"),
+            Category(name="Business"),
+            Category(name="Technology"),
+            Category(name="Society"),
+            Category(name="Sports"),
+            Category(name="Weather")
+        ]
+        for category in categories:
+            db.session.add(category)
+        db.session.commit()
+        app.logger.info("Sample categories created")
+    
+    # Add sample departments if none exist
+    if Department.query.count() == 0:
+        departments = [
+            Department(name="SBC News"),
+            Department(name="SBC Verify"),
+            Department(name="SBC Declassify"),
+            Department(name="SBC Investigation")
+        ]
+        for department in departments:
+            db.session.add(department)
+        db.session.commit()
+        app.logger.info("Sample departments created")

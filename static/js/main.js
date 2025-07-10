@@ -225,18 +225,18 @@ const SBC = {
 // Make SBC utilities globally available
 window.SBC = SBC;
 
-// Service worker registration (for PWA features)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js')
-            .then(function(registration) {
-                console.log('ServiceWorker registration successful');
-            })
-            .catch(function(error) {
-                console.log('ServiceWorker registration failed');
-            });
-    });
-}
+// Service worker registration (for PWA features) - disabled for now
+// if ('serviceWorker' in navigator) {
+//     window.addEventListener('load', function() {
+//         navigator.serviceWorker.register('/sw.js')
+//             .then(function(registration) {
+//                 console.log('ServiceWorker registration successful');
+//             })
+//             .catch(function(error) {
+//                 console.log('ServiceWorker registration failed');
+//             });
+//     });
+// }
 
 // Performance monitoring
 window.addEventListener('load', function() {
