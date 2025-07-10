@@ -324,6 +324,72 @@ footer {
     color: var(--sbc-gray);
 }
 
+/* Quill Editor Custom Styles */
+.ql-toolbar {
+    border-top: 1px solid #e5e7eb;
+    border-left: 1px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
+    border-bottom: none;
+    background-color: var(--sbc-light);
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.ql-container {
+    border-bottom: 1px solid #e5e7eb;
+    border-left: 1px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
+    border-top: none;
+    border-radius: 0 0 0.375rem 0.375rem;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.ql-editor {
+    padding: 1rem;
+    min-height: 300px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ql-editor.ql-blank::before {
+    color: var(--sbc-gray);
+    font-style: italic;
+}
+
+.ql-toolbar .ql-formats {
+    margin-right: 15px;
+}
+
+.ql-toolbar button {
+    border-radius: 0.25rem;
+    margin: 1px;
+}
+
+.ql-toolbar button:hover {
+    background-color: var(--sbc-primary);
+    color: white;
+}
+
+.ql-toolbar button.ql-active {
+    background-color: var(--sbc-primary);
+    color: white;
+}
+
+.ql-tooltip {
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ql-tooltip input {
+    border-radius: 0.25rem;
+    border: 1px solid #d1d5db;
+    padding: 0.25rem 0.5rem;
+}
+
+.ql-tooltip input:focus {
+    border-color: var(--sbc-primary);
+    box-shadow: 0 0 0 0.2rem rgba(30, 58, 138, 0.25);
+}
+
 /* Print styles */
 @media print {
     .navbar,

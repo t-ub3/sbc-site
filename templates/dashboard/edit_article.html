@@ -50,7 +50,8 @@
                                 
                                 <div class="mb-3">
                                     {{ form.content.label(class="form-label") }}
-                                    {{ form.content(class="form-control tinymce-editor", rows="20") }}
+                                    <div id="quill-editor" style="height: 400px;"></div>
+                                    {{ form.content(class="form-control", style="display: none;") }}
                                     {% if form.content.errors %}
                                         {% for error in form.content.errors %}
                                             <div class="text-danger small">{{ error }}</div>
@@ -140,14 +141,45 @@
 
 {% block scripts %}
 <script>
-    tinymce.init({
-        selector: '.tinymce-editor',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; line-height: 1.6; }',
-        height: 400,
-        menubar: false,
-        branding: false
+    // Initialize Quill editor
+    var quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'direction': 'rtl' }],
+                [{ 'size': ['small', false, 'large', 'huge'] }],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'align': [] }],
+                ['link', 'image'],
+                ['clean']
+            ]
+        },
+        placeholder: 'Write your article content here...',
+        formats: ['header', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', 'list', 'bullet', 'script', 'indent', 'direction', 'size', 'color', 'background', 'align', 'link', 'image']
+    });
+
+    // Load existing content into editor
+    var existingContent = document.getElementById('{{ form.content.id }}').value;
+    if (existingContent) {
+        quill.root.innerHTML = existingContent;
+    }
+
+    // Update hidden textarea when content changes
+    quill.on('text-change', function() {
+        var content = quill.root.innerHTML;
+        document.getElementById('{{ form.content.id }}').value = content;
+    });
+
+    // Handle form submission
+    document.querySelector('form').addEventListener('submit', function() {
+        var content = quill.root.innerHTML;
+        document.getElementById('{{ form.content.id }}').value = content;
     });
 </script>
 {% endblock %}
